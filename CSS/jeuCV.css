@@ -61,26 +61,19 @@ body{
     width: 100%;
 }
 
-/*
+
 header{
-    color: #FFF;    
+    padding: 0px 100px 0px 100px;
+    margin-bottom: -40px;
 }
-*/
 
-/*
-#nav{ 
-    width: 100%;   
-    border: 3px solid; 
-    border-radius: 10px; 
-    position: fixed; 
-    right: 0px;
-    top: 0px;
-    background: linear-gradient(lightslategrey, black);
-    font-size: 15px;
-    z-index: 1;
+#controls{
+    text-align: center;
 }
-*/
 
+.controlsDetails {
+	margin: 0;
+}
 
 #divHeader{
     margin: 20px auto;
@@ -94,6 +87,7 @@ h1{
     font-size: 40px;
     color: beige;
     font-family: 'intro-rust-h2';
+    margin-bottom: 0px;
 }
 
 #gameFrame{
