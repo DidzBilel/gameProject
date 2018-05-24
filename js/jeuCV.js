@@ -3,9 +3,10 @@
 window.addEventListener('DOMContentLoaded', function () {
 
     // GETTER D'ELEMENTS HTML
-    var container = window.document.getElementById('charaContainer');
+    var containerLink = window.document.getElementById('charaContainer');
     var link = window.document.getElementById('link');
     var gameFrame = window.document.getElementById('gameFrame');
+    var skillFrame = document.getElementById('skillFrame');
 
 
 
@@ -13,16 +14,14 @@ window.addEventListener('DOMContentLoaded', function () {
     // INIT SCORE
     /************************** Gestion du score ***********************************/
     var divScore = window.document.getElementById('divScore');
-    divScore.innerHTML = 'Score = ';
     var scoreValue = 0;
+    divScore.innerHTML = 'Score = ' + scoreValue;
+
     var scoreIncrement = function () {
-        scoreValue = scoreValue + 15;
+        scoreValue = scoreValue + 100;
         divScore.innerHTML = 'Score = ' + scoreValue;
         console.log(scoreValue);
     };
-
-    /************************** Fin de la gestion du score *************************/
-
 
     // INIT OPACITE TITRE
     var principalTitle = window.document.getElementById('titre');
@@ -55,9 +54,8 @@ window.addEventListener('DOMContentLoaded', function () {
         gitIcon.style.opacity = 0.7;
     }
 
-    /*
-    GESTION DES MOUVEMENTS et INTERVALS
-    */
+
+    // MOTIONS ET INTERVALS
     var arrowInterval;
     var bowAttackIndex = 0;
     var swordIndex = 0;
@@ -65,6 +63,10 @@ window.addEventListener('DOMContentLoaded', function () {
     var leftIndex = 0;
     var topIndex = 0;
     var bottomIndex = 0;
+    var listEnemies = [];
+    var nbEnemies = 0;
+    var enemiesInterval;
+
     var decompositionLink = {
         walkingRight: [{
             maskWidth: '64px',
@@ -186,18 +188,19 @@ window.addEventListener('DOMContentLoaded', function () {
             imageLeft: '-307px'
         }]
     };
-    /*
-    FIN DE LA GESTION DES MOUVEMENTS
-    */
-    container.style.top = '383px';
-    container.style.left = '0px';
-    container.style.width = '65px';
-    container.style.height = '63px';
+
+    // MISE EN PLACE DE LINK
+    containerLink.style.top = '383px';
+    containerLink.style.left = '0px';
+    containerLink.style.width = '65px';
+    containerLink.style.height = '63px';
     gameFrame.style.width = '1280px';
     gameFrame.style.height = '470px';
 
-    var pixelLeft = parseFloat(container.style.left);
-    var pixelTop = parseFloat(container.style.top);
+    var containerLinkLeft = parseFloat(containerLink.style.left);
+    var containerLinkTop = parseFloat(containerLink.style.top);
+
+    // CONSTRUCTEURS D'ENNEMIS ET DE FLECHES
     var RobotConstructor = function () {
         this.compteurEnemies = 0;
         this.decompositionEnemies = {
@@ -265,21 +268,24 @@ window.addEventListener('DOMContentLoaded', function () {
                 imageLeft: '-730px'
             }]
         };
-        this.damageCount = 0;
+
         this.enemiesContainer;
         this.spriteEnemies;
         this.pixelEnemiesLeft;
         this.pixelEnemiesTop;
-        this.pixelTop;
+        this.containerLinkTop;
+
+        // On évite ici le transfert de contexte.
         var that = this;
+        that.damageCount = 0;
+        // METHODE DE MISE EN PLACE DE L'ENNEMI
         this.initEnemies = function () {
 
             that.enemiesContainer = window.document.createElement('div');
             that.enemiesContainer.setAttribute('id', 'enemiesContainer');
             that.enemiesContainer.style.position = 'absolute';
             that.enemiesContainer.style.overflow = 'hidden';
-            that.enemiesContainer.style.border = 'solid';
-            var deltaTop = parseFloat(container.style.top) + (parseFloat(container.style.height) / 4);
+            var deltaTop = parseFloat(containerLink.style.top) + (parseFloat(containerLink.style.height) / 4);
             that.enemiesContainer.style.top = deltaTop + 'px';
             that.enemiesContainer.style.left = '1300px';
             that.enemiesContainer.style.width = '36px';
@@ -300,7 +306,7 @@ window.addEventListener('DOMContentLoaded', function () {
         this.animationEnemies = function () {
             that.pixelEnemiesLeft = parseFloat(that.enemiesContainer.style.left);
             that.pixelEnemiesTop = parseFloat(that.enemiesContainer.style.top);
-            that.pixelTop = parseFloat(container.style.top);
+            that.containerLinkTop = parseFloat(containerLink.style.top);
 
             if (that.compteurEnemies >= that.decompositionEnemies.walkingLeft.length) {
                 that.compteurEnemies = 0;
@@ -313,7 +319,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 that.enemiesContainer.style.display = 'none';
                 that.pixelEnemiesLeft = that.pixelEnemiesLeft - 2;
                 that.enemiesContainer.style.left = that.pixelEnemiesLeft + 'px';
-                that.pixelEnemiesTop = that.pixelTop + 'px';
+                that.pixelEnemiesTop = that.containerLinkTop + 'px';
             }
 
             that.enemiesContainer.style.display = 'block';
@@ -326,7 +332,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
             that.pixelEnemiesLeft = that.pixelEnemiesLeft - 2;
             that.enemiesContainer.style.left = that.pixelEnemiesLeft + 'px';
-            that.pixelEnemiesTop = that.pixelTop;
+            that.pixelEnemiesTop = that.containerLinkTop;
         };
     };
 
@@ -343,9 +349,9 @@ window.addEventListener('DOMContentLoaded', function () {
             var arrowSprite = window.document.createElement('img');
             arrowSprite.setAttribute('id', 'spriteFleche');
             arrowSprite.setAttribute('src', '../sprites/linksprite.png');
-            var leftArrow = parseFloat(container.style.left) + 49; // distance depuis laquelle la fleche part
-            var topArrow = parseFloat(container.style.top);
-            topArrow = topArrow + (parseFloat(container.style.height) / 2);
+            var leftArrow = parseFloat(containerLink.style.left) + 49; // distance depuis laquelle la fleche part
+            var topArrow = parseFloat(containerLink.style.top);
+            topArrow = topArrow + (parseFloat(containerLink.style.height) / 2);
             that.arrowDiv.style.position = 'absolute';
             that.arrowDiv.style.overflow = 'hidden';
             that.arrowDiv.style.width = '49px';
@@ -358,52 +364,64 @@ window.addEventListener('DOMContentLoaded', function () {
             arrowSprite.style.top = '-604px';
             that.arrowDiv.appendChild(arrowSprite);
             gameFrame.appendChild(that.arrowDiv);
+            console.log('Arrow init finished');
         };
             
         this.arrowDeplacement = function () {
-            var pixelLeftArrow = parseFloat(that.arrowDiv.style.left);
-            var widthArrow = parseFloat(that.arrowDiv.style.width);
-            pixelLeftArrow = pixelLeftArrow + 3;
-            that.arrowDiv.style.left = pixelLeftArrow + 'px';
-            if (parseFloat(that.arrowDiv.style.left) >= 1000) {
-                that.arrowDiv.remove();
-            }
+            var arrowDivLeft = parseFloat(that.arrowDiv.style.left);
+            var arrowDivWidth = parseFloat(that.arrowDiv.style.width);
+            var intervalArrowDeplacement = setInterval(function(){
 
-            for (var indexArrow = 0; indexArrow < listEnemies.length; indexArrow++) {
-                that.leftEnemy = parseFloat(listEnemies[indexArrow].enemiesContainer.style.left);
-                that.widthEnemy = parseFloat(listEnemies[indexArrow].enemiesContainer.style.width);
-                if (pixelLeftArrow >= (that.leftEnemy + that.widthEnemy) && pixelLeftArrow <= (that.leftEnemy - that.widthEnemy)) {
-                    console.log('collision Flèche');
+                arrowDivLeft = arrowDivLeft + 7;
+                that.arrowDiv.style.left = arrowDivLeft + 'px';
+                if (parseFloat(that.arrowDiv.style.left) >= 1000) {
                     that.arrowDiv.remove();
+                    console.log(that.arrowDiv.style.left + ' left arrowDiv');
+                    clearInterval(intervalArrowDeplacement);
+                } else {
+                    for (var indexArrow = 0; indexArrow < listEnemies.length; indexArrow++) {
+                        that.leftEnemy = parseFloat(listEnemies[indexArrow].enemiesContainer.style.left);
+                        that.widthEnemy = parseFloat(listEnemies[indexArrow].enemiesContainer.style.width);
+                        
+                        if (collisionDetection(that.arrowDiv, listEnemies[indexArrow].enemiesContainer)) {
+                            console.log('Damage count for enemy : ' + listEnemies[indexArrow].damageCount + '\nArrow damage');
+                            console.log(that.arrowDiv.style.left + ' left arrowDiv');
+                            listEnemies[indexArrow].enemiesContainer.style.width = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].maskWidth;
+                            listEnemies[indexArrow].enemiesContainer.style.height = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].maskHeight;
+                            listEnemies[indexArrow].spriteEnemies.style.top = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].imageTop;
+                            listEnemies[indexArrow].spriteEnemies.style.left = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].imageLeft;
+                            listEnemies[indexArrow].damageCount++;
+                            clearInterval(intervalArrowDeplacement);
 
-                    listEnemies[indexArrow].enemiesContainer.style.width = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].maskWidth;
-                    listEnemies[indexArrow].enemiesContainer.style.height = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].maskHeight;
-                    listEnemies[indexArrow].spriteEnemies.style.top = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].imageTop;
-                    listEnemies[indexArrow].spriteEnemies.style.left = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].imageLeft;
-                    listEnemies[indexArrow].damageCount++;
-
-                    if (listEnemies[indexArrow].damageCount == 3) {
-                        console.log('enemi touché 3 fois');
+                            that.arrowDiv.remove(); 
+                        
+                            if(listEnemies[indexArrow].damageCount == 3){
+                                listEnemies[indexArrow].enemiesContainer.style.top = '0px';
+                                listEnemies[indexArrow].enemiesContainer.style.display = 'none';
+                                scoreIncrement();
+                                skillApparition(indexArrow);
+                                listEnemies[indexArrow].enemiesContainer.remove();
+                                console.log('threeeeee !');
+                            }
+                        }
                     }
                 }
-            }
+            }, 5);
         };        
     };
-
-    var listEnemies = [];
-    var nbEnemies = 0;
 
     var arrowApparition = function(){
         var arrow = new ArrowConstructor();
         arrow.arrowCreation();
-        setInterval(arrow.arrowDeplacement, 5);
+        arrow.arrowDeplacement();        
     };
 
     var enemiesApparition = function () {
-        if (nbEnemies < 5) {
+        if (nbEnemies < 30) {
             listEnemies[nbEnemies] = new RobotConstructor();
             listEnemies[nbEnemies].initEnemies();
-            setInterval(listEnemies[nbEnemies].animationEnemies, 20);
+            enemiesInterval = setInterval(listEnemies[nbEnemies].animationEnemies, 50);
+            
             nbEnemies++;
         }
     };
@@ -414,95 +432,109 @@ window.addEventListener('DOMContentLoaded', function () {
         if (rightIndex >= decompositionLink.walkingRight.length) {
             rightIndex = 0;
         }
-        container.style.width = decompositionLink.walkingRight[rightIndex].maskWidth;
-        container.style.height = decompositionLink.walkingRight[rightIndex].maskHeight;
+        containerLink.style.width = decompositionLink.walkingRight[rightIndex].maskWidth;
+        containerLink.style.height = decompositionLink.walkingRight[rightIndex].maskHeight;
         link.style.top = decompositionLink.walkingRight[rightIndex].imageTop;
         link.style.left = decompositionLink.walkingRight[rightIndex].imageLeft;
         rightIndex++;
-        if (parseFloat(container.style.left) > 1240) {
-            pixelLeft = pixelLeft + 0;
-            container.style.left = pixelLeft + 'px';
+        if (parseFloat(containerLink.style.left) > 1240) {
+            containerLinkLeft = containerLinkLeft + 0;
+            containerLink.style.left = containerLinkLeft + 'px';
         } else {
-            pixelLeft = pixelLeft + 2;
-            container.style.left = pixelLeft + 'px';
+            containerLinkLeft = containerLinkLeft + 2;
+            containerLink.style.left = containerLinkLeft + 'px';
         }
     };
+
     var animationLinkGauche = function () {
         if (leftIndex >= decompositionLink.walkingLeft.length) {
             leftIndex = 0;
         }
-        container.style.width = decompositionLink.walkingLeft[leftIndex].maskWidth;
-        container.style.height = decompositionLink.walkingLeft[leftIndex].maskHeight;
+        containerLink.style.width = decompositionLink.walkingLeft[leftIndex].maskWidth;
+        containerLink.style.height = decompositionLink.walkingLeft[leftIndex].maskHeight;
         link.style.top = decompositionLink.walkingLeft[leftIndex].imageTop;
         link.style.left = decompositionLink.walkingLeft[leftIndex].imageLeft;
         leftIndex++;
-        if (parseFloat(container.style.left) < 0) {
-            pixelLeft = pixelLeft - 0;
-            container.style.left = pixelLeft + 'px';
+        if (parseFloat(containerLink.style.left) < 0) {
+            containerLinkLeft = containerLinkLeft - 0;
+            containerLink.style.left = containerLinkLeft + 'px';
         } else {
-            pixelLeft = pixelLeft - 2;
-            container.style.left = pixelLeft + 'px';
+            containerLinkLeft = containerLinkLeft - 2;
+            containerLink.style.left = containerLinkLeft + 'px';
         }
     };
+
     var animationLinkTop = function () {
         if (topIndex >= decompositionLink.walkingRight.length) {
             topIndex = 0;
         }
-        container.style.width = decompositionLink.walkingRight[topIndex].maskWidth;
-        container.style.height = decompositionLink.walkingRight[topIndex].maskHeight;
+        containerLink.style.width = decompositionLink.walkingRight[topIndex].maskWidth;
+        containerLink.style.height = decompositionLink.walkingRight[topIndex].maskHeight;
         link.style.top = decompositionLink.walkingRight[topIndex].imageTop;
         link.style.left = decompositionLink.walkingRight[topIndex].imageLeft;
         topIndex++;
-        if (parseFloat(container.style.top) < 360) {
-            pixelTop = pixelTop - 0;
-            container.style.top = pixelTop + 'px';
+        if (parseFloat(containerLink.style.top) < 360) {
+            containerLinkTop = containerLinkTop - 0;
+            containerLink.style.top = containerLinkTop + 'px';
         } else {
-            pixelTop = pixelTop - 2;
-            container.style.top = pixelTop + 'px';
+            containerLinkTop = containerLinkTop - 2;
+            containerLink.style.top = containerLinkTop + 'px';
         }
     };
+
     var animationLinkBottom = function () {
         if (bottomIndex >= decompositionLink.walkingRight.length) {
             bottomIndex = 0;
         }
-        container.style.width = decompositionLink.walkingRight[bottomIndex].maskWidth;
-        container.style.height = decompositionLink.walkingRight[bottomIndex].maskHeight;
+        containerLink.style.width = decompositionLink.walkingRight[bottomIndex].maskWidth;
+        containerLink.style.height = decompositionLink.walkingRight[bottomIndex].maskHeight;
         link.style.top = decompositionLink.walkingRight[bottomIndex].imageTop;
         link.style.left = decompositionLink.walkingRight[bottomIndex].imageLeft;
         bottomIndex++;
-        if (parseFloat(container.style.top) > 383) {
-            pixelTop = pixelTop + 0;
-            container.style.top = pixelTop + 'px';
+        if (parseFloat(containerLink.style.top) > 383) {
+            containerLinkTop = containerLinkTop + 0;
+            containerLink.style.top = containerLinkTop + 'px';
         } else {
-            pixelTop = pixelTop + 2;
-            container.style.top = pixelTop + 'px';
+            containerLinkTop = containerLinkTop + 2;
+            containerLink.style.top = containerLinkTop + 'px';
         }
     };
-    var swordCounter = 0;
+
     var swordAttackAnimation = function () {
         var swordInterval = setInterval(function () {
             if (swordIndex >= decompositionLink.swordAttackMotion.length) {
                 swordIndex = 0;
                 clearInterval(swordInterval);
             }
-            container.style.width = decompositionLink.swordAttackMotion[swordIndex].maskWidth;
-            container.style.height = decompositionLink.swordAttackMotion[swordIndex].maskHeight;
+            containerLink.style.width = decompositionLink.swordAttackMotion[swordIndex].maskWidth;
+            containerLink.style.height = decompositionLink.swordAttackMotion[swordIndex].maskHeight;
             link.style.top = decompositionLink.swordAttackMotion[swordIndex].imageTop;
             link.style.left = decompositionLink.swordAttackMotion[swordIndex].imageLeft;
             swordIndex++;
+            
             for (var index = 0; index < listEnemies.length; index++) {
-                if (pixelLeft >= (pixelLeft + parseFloat(listEnemies[index].enemiesContainer.style.width)) && (pixelLeft + parseFloat(container.style.width)) <= parseFloat(listEnemies[index].enemiesContainer.style.left)) {
-                    console.log('Collision Epee');
+                if (collisionDetection(containerLink, listEnemies[index].enemiesContainer)) {
+                    console.log('Damage count for enemy : ' + listEnemies[index].damageCount + '\nSword damage.');
                     listEnemies[index].enemiesContainer.style.width = listEnemies[index].decompositionEnemies.damagedEnemies[0].maskWidth;
                     listEnemies[index].enemiesContainer.style.height = listEnemies[index].decompositionEnemies.damagedEnemies[0].maskHeight;
                     listEnemies[index].spriteEnemies.style.top = listEnemies[index].decompositionEnemies.damagedEnemies[0].imageTop;
                     listEnemies[index].spriteEnemies.style.left = listEnemies[index].decompositionEnemies.damagedEnemies[0].imageLeft;
-                    swordCounter++;
+                    listEnemies[index].damageCount++;
+
+                    if(listEnemies[index].damageCount == 3){
+                        listEnemies[index].enemiesContainer.remove();
+                        scoreIncrement();
+                        skillApparition(index);
+                        console.log('threeeeee !');
+                    }
+
+
                 }
             }
-            container.style.left = pixelLeft + 'px';
+            containerLink.style.left = containerLinkLeft + 'px';
         }, 50);
     };
+
     var bowAttackAnimation = function () {
         var bowAnimationInterval = setInterval(function () {
             if (bowAttackIndex >= decompositionLink.bowAttackMotions.length) {
@@ -511,76 +543,180 @@ window.addEventListener('DOMContentLoaded', function () {
                 clearInterval(bowAnimationInterval);
             }
 
-            container.style.width = decompositionLink.bowAttackMotions[bowAttackIndex].maskWidth;
-            container.style.height = decompositionLink.bowAttackMotions[bowAttackIndex].maskHeight;
+            containerLink.style.width = decompositionLink.bowAttackMotions[bowAttackIndex].maskWidth;
+            containerLink.style.height = decompositionLink.bowAttackMotions[bowAttackIndex].maskHeight;
             link.style.top = decompositionLink.bowAttackMotions[bowAttackIndex].imageTop;
             link.style.left = decompositionLink.bowAttackMotions[bowAttackIndex].imageLeft;
 
             bowAttackIndex++;
 
-            container.style.left = pixelLeft + 'px';
+            containerLink.style.left = containerLinkLeft + 'px';
         }, 200);
     };
-    /************************** Fin de l'animation de Link *************************/
-    /************************** Gestion des flèches ********************************/
-    
-    // var arrowCreation = function () {
-    //     var arrowDiv = document.createElement('div');
-    //     arrowDiv.setAttribute('id', 'divFleche');
-    //     var arrowSprite = document.createElement('img');
-    //     arrowSprite.setAttribute('id', 'spriteFleche');
-    //     arrowSprite.setAttribute('src', '../sprites/linksprite.png');
-    //     var leftArrow = parseFloat(container.style.left) + 49; // distance depuis laquelle la fleche part
-    //     var topArrow = parseFloat(container.style.top);
-    //     topArrow = topArrow + (parseFloat(container.style.height) / 2);
-    //     arrowDiv.style.position = 'absolute';
-    //     arrowDiv.style.overflow = 'hidden';
-    //     arrowDiv.style.width = '49px';
-    //     arrowDiv.style.height = '10px';
-    //     arrowDiv.style.top = topArrow + 'px';
-    //     arrowDiv.style.left = leftArrow + 'px';
-    //     arrowSprite.style.transform = 'scaleX(-1)';
-    //     arrowSprite.style.position = 'absolute';
-    //     arrowSprite.style.left = '-540px';
-    //     arrowSprite.style.top = '-604px';
-    //     arrowDiv.appendChild(arrowSprite);
-    //     gameFrame.appendChild(arrowDiv);
 
-    //     var leftEnemy;
-    //     var widthEnemy;
-    //     var widthArrow = parseFloat(arrowDiv.style.width);
+    var collisionDetection = function(container1, container2){
 
-    //     var arrowDeplacement = function () {
-    //         var pixelLeftArrow = parseFloat(arrowDiv.style.left);
-    //         pixelLeftArrow = pixelLeftArrow + 3;
-    //         arrowDiv.style.left = pixelLeftArrow + 'px';
-    //         if (parseFloat(arrowDiv.style.left) >= 1000) {
-    //             arrowDiv.remove();
-    //             console.log(arrowDiv.style.left);
-    //         }
-    //         for (var indexArrow = 0; indexArrow < listEnemies.length; indexArrow++) {
-    //             leftEnemy = parseFloat(listEnemies[indexArrow].enemiesContainer.style.left);
-    //             widthEnemy = parseFloat(listEnemies[indexArrow].enemiesContainer.style.width);
-    //             if (pixelLeftArrow <= (leftEnemy + widthEnemy) && (pixelLeftArrow + widthArrow) >= leftEnemy) {
-    //                 console.log('collision Flèche');
-    //                 arrowDiv.remove();
+        var container1Left = parseFloat(container1.style.left);
+        var container1Top = parseFloat(container1.style.top);
+        var container1Height = parseFloat(container1.style.height);
+        var container1Width = parseFloat(container1.style.width);
 
-    //                 listEnemies[indexArrow].enemiesContainer.style.width = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].maskWidth;
-    //                 listEnemies[indexArrow].enemiesContainer.style.height = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].maskHeight;
-    //                 listEnemies[indexArrow].spriteEnemies.style.top = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].imageTop;
-    //                 listEnemies[indexArrow].spriteEnemies.style.left = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].imageLeft;
-    //                 listEnemies[indexArrow].damageCount++;
-    //                 if (listEnemies[indexArrow].damageCount == 3) {
-    //                     console.log('enemi touché 3 fois');
-    //                 }
-    //             }
+        var container2Left = parseFloat(container2.style.left);
+        var container2Width = parseFloat(container2.style.width);
+        var container2Top = parseFloat(container2.style.top);
+        var container2Height = parseFloat(container2.style.height);
 
+        if((container2Left >= container1Left + container1Width) || (container2Left + container2Width <= container1Left) 
+        || (container2Top >= container1Top + container1Height) || (container2Top + container2Height <= container1Top)){
+            return false;
+        } else {
+            return true;
+        }
+    };
 
-    //         }
-    //     };
-    //     arrowInterval = setInterval(arrowDeplacement, 5);
-    // };
+    var skillApparition = function(skillCount){
+        
+        var logoHTML = window.document.createElement('div');
+        var logoCSS3 = window.document.createElement('div');
+        var logoJavaScript = window.document.createElement('div');
+        var logoAngular = window.document.createElement('div');
+        var logoJQuery = window.document.createElement('div');
+        var logoBootstrap = window.document.createElement('div');
+        var logoNodeJS = window.document.createElement('div');
+        var logoMongoDB = window.document.createElement('div');
+        var logoXpress = window.document.createElement('div');
+        var logoMeteor = window.document.createElement('div');
+        var logoAjax = window.document.createElement('div');
 
+        if(skillCount == 1){
+            
+            var imgHTML = document.createElement('img');
+            imgHTML.setAttribute('src', '../img/html5Logo.png');
+            imgHTML.style.width = '70px';
+            imgHTML.style.height = '70px';
+            logoHTML.style.width = '70px';
+            logoHTML.style.height = '70px';
+            logoHTML.style.overflow = 'hidden';
+            console.log(skillCount + ' SkillCount !');
+            logoHTML.appendChild(imgHTML);
+            skillFrame.appendChild(logoHTML);
+
+        } else if(skillCount == 3){
+            var imgCSS3 = document.createElement('img');
+            imgCSS3.setAttribute('src', '../img/css3Logo.png');
+            imgCSS3.style.width = '70px';
+            imgCSS3.style.height = '70px';
+            logoCSS3.style.width = '70px';
+            logoCSS3.style.height = '70px';
+            logoCSS3.style.overflow = 'hidden';
+            logoCSS3.appendChild(imgCSS3);
+            skillFrame.appendChild(logoCSS3);
+
+        } else if(skillCount == 5){
+            var imgJavaScript = document.createElement('img');
+            imgJavaScript.setAttribute('src', '../img/javascriptLogo.png');
+            imgJavaScript.style.width = '70px';
+            imgJavaScript.style.height = '70px';
+            logoJavaScript.style.width = '70px';
+            logoJavaScript.style.height = '70px';
+            logoJavaScript.style.overflow = 'hidden';
+            logoJavaScript.appendChild(imgJavaScript);
+            skillFrame.appendChild(logoJavaScript);
+
+        } else if(skillCount == 7){
+            var imgAngular = document.createElement('img');
+            imgAngular.setAttribute('src', '../img/angularLogo.png');
+            imgAngular.style.width = '70px';
+            imgAngular.style.height = '70px';
+            logoAngular.style.width = '70px';
+            logoAngular.style.height = '70px';
+            logoAngular.style.overflow = 'hidden';
+            logoAngular.appendChild(imgAngular);
+            skillFrame.appendChild(logoAngular);
+
+        } else if(skillCount == 9){
+            var imgJquery = document.createElement('img');
+            imgJquery.setAttribute('src', '../img/jqueryLogo.png');
+            imgJquery.style.width = '70px';
+            imgJquery.style.height = '70px';
+            logoJQuery.style.width = '70px';
+            logoJQuery.style.height = '70px';
+            logoJQuery.style.overflow = 'hidden';
+            logoJQuery.appendChild(imgJquery);
+            skillFrame.appendChild(logoJQuery);
+
+        } else if(skillCount == 11){
+            var imgBootstrap = document.createElement('img');
+            imgBootstrap.setAttribute('src', '../img/bootstrapLogo.png');
+            imgBootstrap.style.width = '70px';
+            imgBootstrap.style.height = '70px';
+            logoBootstrap.style.width = '70px';
+            logoBootstrap.style.height = '70px';
+            logoBootstrap.style.overflow = 'hidden';
+            logoBootstrap.appendChild(imgBootstrap);
+            skillFrame.appendChild(logoBootstrap);
+
+        } else if(skillCount == 13){
+            var imgNode = document.createElement('img');
+            imgNode.setAttribute('src', '../img/nodeJSLogo.png');
+            imgNode.style.width = '95px';
+            imgNode.style.height = '75px';
+            logoNodeJS.style.width = '95px';
+            logoNodeJS.style.height = '75px';
+            logoNodeJS.style.overflow = 'hidden';
+            logoNodeJS.appendChild(imgNode);
+            skillFrame.appendChild(logoNodeJS);
+
+        } else if(skillCount == 15){
+            var imgMongoDB = document.createElement('img');
+            imgMongoDB.setAttribute('src', '../img/mongoDBLogo.png');
+            imgMongoDB.style.width = '70px';
+            imgMongoDB.style.height = '70px';
+            logoMongoDB.style.width = '70px';
+            logoMongoDB.style.height = '70px';
+            logoMongoDB.style.overflow = 'hidden';
+            logoMongoDB.appendChild(imgMongoDB);
+            skillFrame.appendChild(logoMongoDB);
+
+        } else if(skillCount == 18){
+            var imgXpress = document.createElement('img');
+            imgXpress.setAttribute('src', '../img/expressJSLogo.png');
+            imgXpress.style.width = '95px';
+            imgXpress.style.height = '45px';
+            logoXpress.style.width = '95px';
+            logoXpress.style.height = '45px';
+            logoXpress.style.overflow = 'hidden';
+            logoXpress.appendChild(imgXpress);
+            skillFrame.appendChild(logoXpress);
+
+        } else if(skillCount == 21){
+            var imgMeteor = document.createElement('img');
+            imgMeteor.setAttribute('src', '../img/meteorJSLogo.png');
+            imgMeteor.style.width = '70px';
+            imgMeteor.style.height = '70px';
+            logoMeteor.style.width = '70px';
+            logoMeteor.style.height = '70px';
+            logoMeteor.style.overflow = 'hidden';
+            logoMeteor.appendChild(imgMeteor);
+            skillFrame.appendChild(logoMeteor);
+
+        } else if(skillCount == 23){
+            var imgAjax = document.createElement('img');
+            imgAjax.setAttribute('src', '../img/ajaxLogo.png');
+            imgAjax.style.width = '95px';
+            imgAjax.style.height = '45px';
+            logoAjax.style.width = '95px';
+            logoAjax.style.height = '45px';
+            logoAjax.style.overflow = 'hidden';
+            logoAjax.appendChild(imgAjax);
+            skillFrame.appendChild(logoAjax);
+        }
+
+    };
+
+    var menupause = function(){
+        var message = confirm('Jeu en pause...');
+    }
     /************************** Debut du gestionnaire de touches *******************/
     window.onkeydown = function (event) {
         var code = event.keyCode;
@@ -601,19 +737,19 @@ window.addEventListener('DOMContentLoaded', function () {
             case 13: // Marque la touche entrée pour coup d'épée
                 swordAttackAnimation();
                 break;
-            case 170: // marque la touche étoiles pour tir arc
+            case 170: // marque la touche étoile pour tir arc
                 bowAttackAnimation();
                 break;
-            case 220:
+            case 220: // Marque la touche étoile pour autres Navigateurs.
                 bowAttackAnimation();
                 break;
-        }; // fin du switch 
-    }; // fin du keydown
+            case 80:
+                menupause();
+                break;
+        };
+    };
 
     /* INTERVALS D'ANIMATIONS */
     setInterval(blinkTitle, 200);
-    setInterval(enemiesApparition, 3000);
+    setInterval(enemiesApparition, 5000);
 });
-//};
-
-// DIFFERENCIER LA PARTIE INIT DE LA PARTIE ANIMATION (set Interval sur la partie animation)
