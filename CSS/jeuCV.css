@@ -62,11 +62,11 @@ body {
 }
 
 .redSaiyan{
-    color: red;
+    color: #92030C;
 }
 
 .yellowSaiyan{
-    color: yellow;
+    color: #D6A600;
 }
 header {
     padding: 0px 100px 0px 100px;
@@ -288,10 +288,12 @@ span {
 
 #textCV {
     font-family: 'intro-rust-h2';
+    font-family: 'saiyan';
 }
 
 #textGIT {
     font-family: 'intro-rust-h2';
+    font-family: 'saiyan'
 }
 
 legend {
