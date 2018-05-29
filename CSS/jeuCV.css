@@ -1,81 +1,80 @@
 @font-face {
     font-family: 'nexa-rust';
     src: url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.eot');
-    src: url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.woff2') format('woff2'),
-         url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.woff') format('woff'),
-         url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.ttf') format('truetype'),
-         url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.svg#nexa_rust_slabblack_shadow_01') format('svg');
+    src: url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.woff2') format('woff2'), url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.woff') format('woff'), url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.ttf') format('truetype'), url('fonts/NexaRustSlab-BlackShadow01-Free-webfont.svg#nexa_rust_slabblack_shadow_01') format('svg');
     font-weight: bold;
     font-style: normal;
-
 }
+
 @font-face {
     font-family: 'intro-rust-base';
     src: url('fonts/introrustg-base2line-webfont.eot');
-    src: url('fonts/introrustg-base2line-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/introrustg-base2line-webfont.woff2') format('woff2'),
-         url('fonts/introrustg-base2line-webfont.woff') format('woff'),
-         url('fonts/introrustg-base2line-webfont.ttf') format('truetype'),
-         url('fonts/introrustg-base2line-webfont.svg#intro_rust_gbase_2_line') format('svg');
+    src: url('fonts/introrustg-base2line-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/introrustg-base2line-webfont.woff2') format('woff2'), url('fonts/introrustg-base2line-webfont.woff') format('woff'), url('fonts/introrustg-base2line-webfont.ttf') format('truetype'), url('fonts/introrustg-base2line-webfont.svg#intro_rust_gbase_2_line') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
-
-
-
 
 @font-face {
     font-family: 'intro-rust-head';
     src: url('fonts/introheadr-base-webfont.eot');
-    src: url('fonts/introheadr-base-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/introheadr-base-webfont.woff2') format('woff2'),
-         url('fonts/introheadr-base-webfont.woff') format('woff'),
-         url('fonts/introheadr-base-webfont.ttf') format('truetype'),
-         url('fonts/introheadr-base-webfont.svg#intro_head_rbase') format('svg');
+    src: url('fonts/introheadr-base-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/introheadr-base-webfont.woff2') format('woff2'), url('fonts/introheadr-base-webfont.woff') format('woff'), url('fonts/introheadr-base-webfont.ttf') format('truetype'), url('fonts/introheadr-base-webfont.svg#intro_head_rbase') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
-
-
-
 
 @font-face {
     font-family: 'intro-rust-h2';
     src: url('fonts/introscriptr-h2base-webfont.eot');
-    src: url('fonts/introscriptr-h2base-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/introscriptr-h2base-webfont.woff2') format('woff2'),
-         url('fonts/introscriptr-h2base-webfont.woff') format('woff'),
-         url('fonts/introscriptr-h2base-webfont.ttf') format('truetype'),
-         url('fonts/introscriptr-h2base-webfont.svg#intro_script_rh2_base') format('svg');
+    src: url('fonts/introscriptr-h2base-webfont.eot?#iefix') format('embedded-opentype'), 
+    url('fonts/introscriptr-h2base-webfont.woff2') format('woff2'), 
+    url('fonts/introscriptr-h2base-webfont.woff') format('woff'), 
+    url('fonts/introscriptr-h2base-webfont.ttf') format('truetype'), 
+    url('fonts/introscriptr-h2base-webfont.svg#intro_script_rh2_base') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
-body{
-    background-image: url(../img/wallpaper2.jpg);
+@font-face {
+    font-family: 'saiyan';
+    src: url('fonts/Saiyan-Sans.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'saiyanObliqueLeft';
+    src: url('fonts/Saiyan-Sans\ Left\ Oblique.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face{
+    font-family: 'saiyanObliqueRight';
+    src: url('fonts/Saiyan-Sans\ Right\ Oblique.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-image: url(../img/goku-wallpaper.jpg);
     background-size: cover;
     width: 100%;
 }
 
+.redSaiyan{
+    color: red;
+}
 
-header{
+.yellowSaiyan{
+    color: yellow;
+}
+header {
     padding: 0px 100px 0px 100px;
     margin-bottom: -40px;
 }
 
-#controls{
-    text-align: center;
-}
 
-.controlsDetails {
-	margin: 0;
-}
-
-#divHeader{
+#divHeader {
     margin: 20px auto;
     display: flex;
     flex-direction: row;
@@ -83,14 +82,20 @@ header{
     align-items: center;
 }
 
-h1{
+h1 {
     font-size: 40px;
     color: beige;
-    font-family: 'intro-rust-h2';
+    font-family: 'saiyan';
     margin-bottom: 0px;
 }
 
-#gameFrame{
+.controls{
+    text-align: center;
+    font-family: 'saiyanObliqueRight';
+    font-size: 20px;
+}
+
+#gameFrame {
     position: relative;
     border: 10px solid #310003;
     border-radius: 5px;
@@ -101,7 +106,7 @@ h1{
     background-image: url(../sprites/stageBeige.jpg);
 }
 
-#score{
+#score {
     position: absolute;
     border: solid #310003;
     border-radius: 15px;
@@ -110,45 +115,47 @@ h1{
     height: 40px;
     left: 560px;
     top: 80px;
-    font-family: 'intro-rust-base';
+    font-family: 'saiyanObliqueLeft';
+    color: red;
+    font-size: 20px;
 }
 
-#divScore{
+#divScore {
     position: absolute;
     top: 10px;
     left: 30px;
 }
 
-#nuage{
+#nuage {
     position: absolute;
-    top:-80px;
+    top: -80px;
     left: -30px;
 }
 
-#charaContainer{
+#charaContainer {
     position: absolute;
     overflow: hidden;
 }
 
-#enemiesContainer{
+#enemiesContainer {
     position: absolute;
     overflow: hidden;
 }
 
-#link{
+#link {
     position: absolute;
     left: -305px;
     top: -200px;
 }
 
-#enemies{
+#enemies {
     position: absolute;
     width: 765px;
     height: 756px;
     transform: scaleX(-1);
 }
 
-#shenron{
+#shenron {
     position: absolute;
     left: 0px;
     top: 0px;
@@ -156,7 +163,7 @@ h1{
     height: 165px;
 }
 
-#navy{
+#navy {
     position: absolute;
     left: 1185px;
     top: 0px;
@@ -164,10 +171,9 @@ h1{
     height: 95px;
 }
 
-#skillFrame{
+#skillFrame {
     width: 1280px;
     height: 100px;
-    border: 1px solid black;
     margin: auto;
     display: flex;
     flex-direction: row;
@@ -175,41 +181,93 @@ h1{
     justify-content: center;
 }
 
-#sectionLiens{
+#forma-xp {
+    width: 1000px;
+    height: 343px;
+    margin: auto;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: black;
+    font-weight: bolder;
+    border: 5px solid #583A34;
+    border-radius: 15px;
+    font-family: 'intro-rust-base';
+}
+
+#terrainDBZ {
+    position: absolute;
+    left: 0px;
+    width: 1000px;
+    height: 343px;
+    z-index: -1;
+}
+
+.titleFormatXp {
+    font-family: 'nexa-rust';
+    font-size: 14px;
+}
+
+#formations {
+    font-size: 8px;
+    width: 300px;
+}
+
+.formaListTitle {
+    font-size: 18px;
+}
+
+#xp {
+    margin-left: 110px;
+    font-size: 11px;
+}
+
+#xpList li {
+    font-size: 18px;
+}
+
+#goku-icon,
+#frieza-icon {
+    width: 50px;
+    height: 50px;
+    float: right;
+}
+
+#sectionLiens {
     margin: auto;
 }
 
-#frameLiens{
+#frameLiens {
     width: 1100px;
     height: 555px;
     margin: auto;
 }
 
-fieldset{
+fieldset {
     display: inline;
 }
 
-#iconeGit{
+#iconeGit {
     background-color: #FED18E;
     opacity: 0.5;
 }
 
-#iconeCv{
+#iconeCv {
     background-color: #FED18E;
     opacity: 0.5;
 }
 
 @keyframes tourne {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
-#dragonBalls{
-    
+#dragonBalls {
     animation: tourne 60s infinite;
     width: 100px;
     height: 100px;
@@ -217,36 +275,25 @@ fieldset{
     top: 45px;
 }
 
-#linkTired{
+#linkTired {
     width: 90px;
     height: 100px;
     left: 1320px;
     top: 45px;
 }
-span{
+
+span {
     color: black;
 }
 
-#textCV{
+#textCV {
     font-family: 'intro-rust-h2';
 }
 
-#textGIT{
+#textGIT {
     font-family: 'intro-rust-h2';
 }
 
-#nexa{
-   font-family: 'nexa-rust'; 
-}
-
-#introBase{
-    font-family: 'intro-rust-base';
-}
-
-#introHead{
-    font-family: 'intro-rust-head';
-}
-
-#introH2{
-    font-family: 'intro-rust-h2';
+legend {
+    font-weight: bolder;
 }

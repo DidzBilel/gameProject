@@ -1,13 +1,19 @@
 'use strict';
 //window.onload = function(){
 window.addEventListener('DOMContentLoaded', function () {
+$(document).ready(function(){
+document.getElementById('formations').style.display = 'none';
+document.getElementById('xp').style.display = 'none';
 
     // GETTER D'ELEMENTS HTML
     var containerLink = window.document.getElementById('charaContainer');
     var link = window.document.getElementById('link');
     var gameFrame = window.document.getElementById('gameFrame');
     var skillFrame = document.getElementById('skillFrame');
+    var divFormaXp = $('#forma-xp');
 
+    // Display none pour ne pas l'afficher dès le début.
+    document.getElementById('forma-xp').style.display = 'none';
 
 
 
@@ -15,12 +21,34 @@ window.addEventListener('DOMContentLoaded', function () {
     /************************** Gestion du score ***********************************/
     var divScore = window.document.getElementById('divScore');
     var scoreValue = 0;
-    divScore.innerHTML = 'Score = ' + scoreValue;
+    divScore.innerHTML = 'Score : ' + scoreValue;
 
-    var scoreIncrement = function () {
-        scoreValue = scoreValue + 100;
+    var scoreIncrement = function () { 
+        
+            if(scoreValue === 500){
+                divFormaXp.show(1000);
+                $('#formations').fadeIn(1000, 'linear');
+                $('#xp').fadeIn(1000, 'swing');
+            }
+             
+          
+        
+
+        scoreValue = scoreValue + 50;
         divScore.innerHTML = 'Score = ' + scoreValue;
         console.log(scoreValue);
+
+        if(scoreValue === 1500){
+            console.log('Rentréeeee');
+            containerLink.style.display = 'none';
+            var fightingGif = document.createElement('img');
+            fightingGif.setAttribute('src', '../img/fight.gif');
+            fightingGif.style.position = 'absolute';
+            fightingGif.style.width = '500px';
+            fightingGif.style.left = '355px';
+            fightingGif.style.top = '100px';
+            gameFrame.appendChild(fightingGif);
+        }          
     };
 
     // INIT OPACITE TITRE
@@ -56,7 +84,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 
     // MOTIONS ET INTERVALS
-    var arrowInterval;
+    var nbEnemies = 0;
     var bowAttackIndex = 0;
     var swordIndex = 0;
     var rightIndex = 0;
@@ -64,10 +92,12 @@ window.addEventListener('DOMContentLoaded', function () {
     var topIndex = 0;
     var bottomIndex = 0;
     var listEnemies = [];
-    var nbEnemies = 0;
+    var arrowInterval;
     var enemiesInterval;
 
-    var decompositionLink = {
+
+    // - Tableau d'Objet représentants les décomposition du mouvement de Link
+    var linkMotions = {
         walkingRight: [{
             maskWidth: '64px',
             maskHeight: '63px',
@@ -186,6 +216,12 @@ window.addEventListener('DOMContentLoaded', function () {
             maskHeight: '63px',
             imageTop: '-200px',
             imageLeft: '-307px'
+        }],
+        victoryFrame: [{
+            maskWidth: '42px',
+            maskHeight: '61px',
+            imageTop: '-43px',
+            imageLeft: '-508px'
         }]
     };
 
@@ -197,10 +233,11 @@ window.addEventListener('DOMContentLoaded', function () {
     gameFrame.style.width = '1280px';
     gameFrame.style.height = '470px';
 
+    // - Récupération des valeurs de Link.
     var containerLinkLeft = parseFloat(containerLink.style.left);
     var containerLinkTop = parseFloat(containerLink.style.top);
 
-    // CONSTRUCTEURS D'ENNEMIS ET DE FLECHES
+    // - CONSTRUCTEURS D'ENNEMIS 
     var RobotConstructor = function () {
         this.compteurEnemies = 0;
         this.decompositionEnemies = {
@@ -330,12 +367,13 @@ window.addEventListener('DOMContentLoaded', function () {
 
             that.compteurEnemies++;
 
-            that.pixelEnemiesLeft = that.pixelEnemiesLeft - 2;
+            that.pixelEnemiesLeft = that.pixelEnemiesLeft - 4;
             that.enemiesContainer.style.left = that.pixelEnemiesLeft + 'px';
             that.pixelEnemiesTop = that.containerLinkTop;
         };
     };
 
+    // - CONSTRUCTEUR DE FLECHES
     var ArrowConstructor = function(){
         this.leftEnemy;
         this.widthEnemy;
@@ -364,7 +402,6 @@ window.addEventListener('DOMContentLoaded', function () {
             arrowSprite.style.top = '-604px';
             that.arrowDiv.appendChild(arrowSprite);
             gameFrame.appendChild(that.arrowDiv);
-            console.log('Arrow init finished');
         };
             
         this.arrowDeplacement = function () {
@@ -372,11 +409,10 @@ window.addEventListener('DOMContentLoaded', function () {
             var arrowDivWidth = parseFloat(that.arrowDiv.style.width);
             var intervalArrowDeplacement = setInterval(function(){
 
-                arrowDivLeft = arrowDivLeft + 7;
+                arrowDivLeft = arrowDivLeft + 5;
                 that.arrowDiv.style.left = arrowDivLeft + 'px';
-                if (parseFloat(that.arrowDiv.style.left) >= 1000) {
+                if (parseFloat(that.arrowDiv.style.left) >= 700) {
                     that.arrowDiv.remove();
-                    console.log(that.arrowDiv.style.left + ' left arrowDiv');
                     clearInterval(intervalArrowDeplacement);
                 } else {
                     for (var indexArrow = 0; indexArrow < listEnemies.length; indexArrow++) {
@@ -384,8 +420,6 @@ window.addEventListener('DOMContentLoaded', function () {
                         that.widthEnemy = parseFloat(listEnemies[indexArrow].enemiesContainer.style.width);
                         
                         if (collisionDetection(that.arrowDiv, listEnemies[indexArrow].enemiesContainer)) {
-                            console.log('Damage count for enemy : ' + listEnemies[indexArrow].damageCount + '\nArrow damage');
-                            console.log(that.arrowDiv.style.left + ' left arrowDiv');
                             listEnemies[indexArrow].enemiesContainer.style.width = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].maskWidth;
                             listEnemies[indexArrow].enemiesContainer.style.height = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].maskHeight;
                             listEnemies[indexArrow].spriteEnemies.style.top = listEnemies[indexArrow].decompositionEnemies.damagedEnemies[0].imageTop;
@@ -401,7 +435,7 @@ window.addEventListener('DOMContentLoaded', function () {
                                 scoreIncrement();
                                 skillApparition(indexArrow);
                                 listEnemies[indexArrow].enemiesContainer.remove();
-                                console.log('threeeeee !');
+                                
                             }
                         }
                     }
@@ -410,14 +444,16 @@ window.addEventListener('DOMContentLoaded', function () {
         };        
     };
 
+    // - Fonction permettant de déclancher l'initialisation et l'animation d'une nouvelle Flèche
     var arrowApparition = function(){
         var arrow = new ArrowConstructor();
         arrow.arrowCreation();
         arrow.arrowDeplacement();        
     };
-
+    
+    // - Fonction permettant de déclancher l'apparition des ennemis
     var enemiesApparition = function () {
-        if (nbEnemies < 30) {
+        if (nbEnemies < 30) { // - Ici 30 correspond au nombre total d'ennemis
             listEnemies[nbEnemies] = new RobotConstructor();
             listEnemies[nbEnemies].initEnemies();
             enemiesInterval = setInterval(listEnemies[nbEnemies].animationEnemies, 50);
@@ -427,15 +463,15 @@ window.addEventListener('DOMContentLoaded', function () {
     };
 
 
-    /************************* Animation de Link **************************/
-    var animationLinkDroite = function () {
-        if (rightIndex >= decompositionLink.walkingRight.length) {
+    // - Animations de Link 
+    var linkRightAnimation = function () {
+        if (rightIndex >= linkMotions.walkingRight.length) {
             rightIndex = 0;
         }
-        containerLink.style.width = decompositionLink.walkingRight[rightIndex].maskWidth;
-        containerLink.style.height = decompositionLink.walkingRight[rightIndex].maskHeight;
-        link.style.top = decompositionLink.walkingRight[rightIndex].imageTop;
-        link.style.left = decompositionLink.walkingRight[rightIndex].imageLeft;
+        containerLink.style.width = linkMotions.walkingRight[rightIndex].maskWidth;
+        containerLink.style.height = linkMotions.walkingRight[rightIndex].maskHeight;
+        link.style.top = linkMotions.walkingRight[rightIndex].imageTop;
+        link.style.left = linkMotions.walkingRight[rightIndex].imageLeft;
         rightIndex++;
         if (parseFloat(containerLink.style.left) > 1240) {
             containerLinkLeft = containerLinkLeft + 0;
@@ -446,14 +482,14 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    var animationLinkGauche = function () {
-        if (leftIndex >= decompositionLink.walkingLeft.length) {
+    var linkLeftAnimation = function () {
+        if (leftIndex >= linkMotions.walkingLeft.length) {
             leftIndex = 0;
         }
-        containerLink.style.width = decompositionLink.walkingLeft[leftIndex].maskWidth;
-        containerLink.style.height = decompositionLink.walkingLeft[leftIndex].maskHeight;
-        link.style.top = decompositionLink.walkingLeft[leftIndex].imageTop;
-        link.style.left = decompositionLink.walkingLeft[leftIndex].imageLeft;
+        containerLink.style.width = linkMotions.walkingLeft[leftIndex].maskWidth;
+        containerLink.style.height = linkMotions.walkingLeft[leftIndex].maskHeight;
+        link.style.top = linkMotions.walkingLeft[leftIndex].imageTop;
+        link.style.left = linkMotions.walkingLeft[leftIndex].imageLeft;
         leftIndex++;
         if (parseFloat(containerLink.style.left) < 0) {
             containerLinkLeft = containerLinkLeft - 0;
@@ -464,14 +500,14 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    var animationLinkTop = function () {
-        if (topIndex >= decompositionLink.walkingRight.length) {
+    var linkTopAnimation = function () {
+        if (topIndex >= linkMotions.walkingRight.length) {
             topIndex = 0;
         }
-        containerLink.style.width = decompositionLink.walkingRight[topIndex].maskWidth;
-        containerLink.style.height = decompositionLink.walkingRight[topIndex].maskHeight;
-        link.style.top = decompositionLink.walkingRight[topIndex].imageTop;
-        link.style.left = decompositionLink.walkingRight[topIndex].imageLeft;
+        containerLink.style.width = linkMotions.walkingRight[topIndex].maskWidth;
+        containerLink.style.height = linkMotions.walkingRight[topIndex].maskHeight;
+        link.style.top = linkMotions.walkingRight[topIndex].imageTop;
+        link.style.left = linkMotions.walkingRight[topIndex].imageLeft;
         topIndex++;
         if (parseFloat(containerLink.style.top) < 360) {
             containerLinkTop = containerLinkTop - 0;
@@ -482,14 +518,14 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    var animationLinkBottom = function () {
-        if (bottomIndex >= decompositionLink.walkingRight.length) {
+    var linkBottomAnimation = function () {
+        if (bottomIndex >= linkMotions.walkingRight.length) {
             bottomIndex = 0;
         }
-        containerLink.style.width = decompositionLink.walkingRight[bottomIndex].maskWidth;
-        containerLink.style.height = decompositionLink.walkingRight[bottomIndex].maskHeight;
-        link.style.top = decompositionLink.walkingRight[bottomIndex].imageTop;
-        link.style.left = decompositionLink.walkingRight[bottomIndex].imageLeft;
+        containerLink.style.width = linkMotions.walkingRight[bottomIndex].maskWidth;
+        containerLink.style.height = linkMotions.walkingRight[bottomIndex].maskHeight;
+        link.style.top = linkMotions.walkingRight[bottomIndex].imageTop;
+        link.style.left = linkMotions.walkingRight[bottomIndex].imageLeft;
         bottomIndex++;
         if (parseFloat(containerLink.style.top) > 383) {
             containerLinkTop = containerLinkTop + 0;
@@ -500,16 +536,17 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    // - Animations d'attaque
     var swordAttackAnimation = function () {
         var swordInterval = setInterval(function () {
-            if (swordIndex >= decompositionLink.swordAttackMotion.length) {
+            if (swordIndex >= linkMotions.swordAttackMotion.length) {
                 swordIndex = 0;
                 clearInterval(swordInterval);
             }
-            containerLink.style.width = decompositionLink.swordAttackMotion[swordIndex].maskWidth;
-            containerLink.style.height = decompositionLink.swordAttackMotion[swordIndex].maskHeight;
-            link.style.top = decompositionLink.swordAttackMotion[swordIndex].imageTop;
-            link.style.left = decompositionLink.swordAttackMotion[swordIndex].imageLeft;
+            containerLink.style.width = linkMotions.swordAttackMotion[swordIndex].maskWidth;
+            containerLink.style.height = linkMotions.swordAttackMotion[swordIndex].maskHeight;
+            link.style.top = linkMotions.swordAttackMotion[swordIndex].imageTop;
+            link.style.left = linkMotions.swordAttackMotion[swordIndex].imageLeft;
             swordIndex++;
             
             for (var index = 0; index < listEnemies.length; index++) {
@@ -537,16 +574,16 @@ window.addEventListener('DOMContentLoaded', function () {
 
     var bowAttackAnimation = function () {
         var bowAnimationInterval = setInterval(function () {
-            if (bowAttackIndex >= decompositionLink.bowAttackMotions.length) {
+            if (bowAttackIndex >= linkMotions.bowAttackMotions.length) {
                 bowAttackIndex = 0;
                 arrowApparition();
                 clearInterval(bowAnimationInterval);
             }
 
-            containerLink.style.width = decompositionLink.bowAttackMotions[bowAttackIndex].maskWidth;
-            containerLink.style.height = decompositionLink.bowAttackMotions[bowAttackIndex].maskHeight;
-            link.style.top = decompositionLink.bowAttackMotions[bowAttackIndex].imageTop;
-            link.style.left = decompositionLink.bowAttackMotions[bowAttackIndex].imageLeft;
+            containerLink.style.width = linkMotions.bowAttackMotions[bowAttackIndex].maskWidth;
+            containerLink.style.height = linkMotions.bowAttackMotions[bowAttackIndex].maskHeight;
+            link.style.top = linkMotions.bowAttackMotions[bowAttackIndex].imageTop;
+            link.style.left = linkMotions.bowAttackMotions[bowAttackIndex].imageLeft;
 
             bowAttackIndex++;
 
@@ -554,6 +591,8 @@ window.addEventListener('DOMContentLoaded', function () {
         }, 200);
     };
 
+
+    // - Fonction permettant de détecter une collision entre 2 containers.
     var collisionDetection = function(container1, container2){
 
         var container1Left = parseFloat(container1.style.left);
@@ -574,21 +613,33 @@ window.addEventListener('DOMContentLoaded', function () {
         }
     };
 
+    // - Fonction qui gère l'apparition des compétences.
     var skillApparition = function(skillCount){
         
         var logoHTML = window.document.createElement('div');
+        logoHTML.setAttribute('id', 'logoHTML');
         var logoCSS3 = window.document.createElement('div');
+        logoCSS3.setAttribute('id', 'logoCSS3');
         var logoJavaScript = window.document.createElement('div');
+        logoJavaScript.setAttribute('id', 'logoJavaScript');
         var logoAngular = window.document.createElement('div');
+        logoAngular.setAttribute('id', 'logoAngular');
         var logoJQuery = window.document.createElement('div');
+        logoJQuery.setAttribute('id', 'logoJQuery');
         var logoBootstrap = window.document.createElement('div');
+        logoBootstrap.setAttribute('id', 'logoBootstrap');
         var logoNodeJS = window.document.createElement('div');
+        logoNodeJS.setAttribute('id', 'logoNodeJS');
         var logoMongoDB = window.document.createElement('div');
+        logoMongoDB.setAttribute('id', 'logoMongoDB');
         var logoXpress = window.document.createElement('div');
+        logoXpress.setAttribute('id', 'logoXpress');
         var logoMeteor = window.document.createElement('div');
+        logoMeteor.setAttribute('id', 'logoMeteor');
         var logoAjax = window.document.createElement('div');
+        logoAjax.setAttribute('id', 'logoAjax');
 
-        if(skillCount == 1){
+        if(skillCount === 1){
             
             var imgHTML = document.createElement('img');
             imgHTML.setAttribute('src', '../img/html5Logo.png');
@@ -597,11 +648,12 @@ window.addEventListener('DOMContentLoaded', function () {
             logoHTML.style.width = '70px';
             logoHTML.style.height = '70px';
             logoHTML.style.overflow = 'hidden';
-            console.log(skillCount + ' SkillCount !');
+            logoHTML.style.display = 'none';
             logoHTML.appendChild(imgHTML);
             skillFrame.appendChild(logoHTML);
+            $('#logoHTML').fadeIn(1300, 'linear');
 
-        } else if(skillCount == 3){
+        } else if(skillCount === 3){
             var imgCSS3 = document.createElement('img');
             imgCSS3.setAttribute('src', '../img/css3Logo.png');
             imgCSS3.style.width = '70px';
@@ -609,10 +661,12 @@ window.addEventListener('DOMContentLoaded', function () {
             logoCSS3.style.width = '70px';
             logoCSS3.style.height = '70px';
             logoCSS3.style.overflow = 'hidden';
+            logoCSS3.style.display = 'none';
             logoCSS3.appendChild(imgCSS3);
             skillFrame.appendChild(logoCSS3);
+            $('#logoCSS3').fadeIn(2000, 'swing');
 
-        } else if(skillCount == 5){
+        } else if(skillCount === 5){
             var imgJavaScript = document.createElement('img');
             imgJavaScript.setAttribute('src', '../img/javascriptLogo.png');
             imgJavaScript.style.width = '70px';
@@ -620,10 +674,12 @@ window.addEventListener('DOMContentLoaded', function () {
             logoJavaScript.style.width = '70px';
             logoJavaScript.style.height = '70px';
             logoJavaScript.style.overflow = 'hidden';
+            logoJavaScript.style.display = 'none';
             logoJavaScript.appendChild(imgJavaScript);
             skillFrame.appendChild(logoJavaScript);
+            $('#logoJavaScript').fadeIn(1300, 'linear');
 
-        } else if(skillCount == 7){
+        } else if(skillCount === 7){
             var imgAngular = document.createElement('img');
             imgAngular.setAttribute('src', '../img/angularLogo.png');
             imgAngular.style.width = '70px';
@@ -631,10 +687,12 @@ window.addEventListener('DOMContentLoaded', function () {
             logoAngular.style.width = '70px';
             logoAngular.style.height = '70px';
             logoAngular.style.overflow = 'hidden';
+            logoAngular.style.display = 'none';
             logoAngular.appendChild(imgAngular);
             skillFrame.appendChild(logoAngular);
+            $('#logoAngular').fadeIn(1300, 'swing');
 
-        } else if(skillCount == 9){
+        } else if(skillCount === 9){
             var imgJquery = document.createElement('img');
             imgJquery.setAttribute('src', '../img/jqueryLogo.png');
             imgJquery.style.width = '70px';
@@ -642,10 +700,12 @@ window.addEventListener('DOMContentLoaded', function () {
             logoJQuery.style.width = '70px';
             logoJQuery.style.height = '70px';
             logoJQuery.style.overflow = 'hidden';
+            logoJQuery.style.display = 'none';
             logoJQuery.appendChild(imgJquery);
             skillFrame.appendChild(logoJQuery);
+            $('#logoJQuery').fadeIn(1300, 'linear');
 
-        } else if(skillCount == 11){
+        } else if(skillCount === 11){
             var imgBootstrap = document.createElement('img');
             imgBootstrap.setAttribute('src', '../img/bootstrapLogo.png');
             imgBootstrap.style.width = '70px';
@@ -653,10 +713,12 @@ window.addEventListener('DOMContentLoaded', function () {
             logoBootstrap.style.width = '70px';
             logoBootstrap.style.height = '70px';
             logoBootstrap.style.overflow = 'hidden';
+            logoBootstrap.style.display = 'none';
             logoBootstrap.appendChild(imgBootstrap);
             skillFrame.appendChild(logoBootstrap);
+            $('#logoBootstrap').fadeIn(1300, 'swing');
 
-        } else if(skillCount == 13){
+        } else if(skillCount === 13){
             var imgNode = document.createElement('img');
             imgNode.setAttribute('src', '../img/nodeJSLogo.png');
             imgNode.style.width = '95px';
@@ -664,10 +726,12 @@ window.addEventListener('DOMContentLoaded', function () {
             logoNodeJS.style.width = '95px';
             logoNodeJS.style.height = '75px';
             logoNodeJS.style.overflow = 'hidden';
+            logoNodeJS.style.display = 'none';
             logoNodeJS.appendChild(imgNode);
             skillFrame.appendChild(logoNodeJS);
+            $('#logoNodeJS').fadeIn(1300, 'linear');
 
-        } else if(skillCount == 15){
+        } else if(skillCount === 15){
             var imgMongoDB = document.createElement('img');
             imgMongoDB.setAttribute('src', '../img/mongoDBLogo.png');
             imgMongoDB.style.width = '70px';
@@ -675,10 +739,12 @@ window.addEventListener('DOMContentLoaded', function () {
             logoMongoDB.style.width = '70px';
             logoMongoDB.style.height = '70px';
             logoMongoDB.style.overflow = 'hidden';
+            logoMongoDB.style.display = 'none';
             logoMongoDB.appendChild(imgMongoDB);
             skillFrame.appendChild(logoMongoDB);
+            $('#logoMongoDB').fadeIn(1300, 'swing');
 
-        } else if(skillCount == 18){
+        } else if(skillCount === 18){
             var imgXpress = document.createElement('img');
             imgXpress.setAttribute('src', '../img/expressJSLogo.png');
             imgXpress.style.width = '95px';
@@ -686,10 +752,12 @@ window.addEventListener('DOMContentLoaded', function () {
             logoXpress.style.width = '95px';
             logoXpress.style.height = '45px';
             logoXpress.style.overflow = 'hidden';
+            logoXpress.style.display = 'none';
             logoXpress.appendChild(imgXpress);
             skillFrame.appendChild(logoXpress);
+            $('#logoXpress').fadeIn(1300, 'linear');
 
-        } else if(skillCount == 21){
+        } else if(skillCount === 21){
             var imgMeteor = document.createElement('img');
             imgMeteor.setAttribute('src', '../img/meteorJSLogo.png');
             imgMeteor.style.width = '70px';
@@ -697,10 +765,12 @@ window.addEventListener('DOMContentLoaded', function () {
             logoMeteor.style.width = '70px';
             logoMeteor.style.height = '70px';
             logoMeteor.style.overflow = 'hidden';
+            logoMeteor.style.display = 'none';
             logoMeteor.appendChild(imgMeteor);
             skillFrame.appendChild(logoMeteor);
+            $('#logoMeteor').fadeIn(1300, 'swing');
 
-        } else if(skillCount == 23){
+        } else if(skillCount === 23){
             var imgAjax = document.createElement('img');
             imgAjax.setAttribute('src', '../img/ajaxLogo.png');
             imgAjax.style.width = '95px';
@@ -708,31 +778,30 @@ window.addEventListener('DOMContentLoaded', function () {
             logoAjax.style.width = '95px';
             logoAjax.style.height = '45px';
             logoAjax.style.overflow = 'hidden';
+            logoAjax.style.display = 'none';
             logoAjax.appendChild(imgAjax);
             skillFrame.appendChild(logoAjax);
+            $('#logoAjax').fadeIn(1300, 'linear');
         }
 
     };
 
-    var menupause = function(){
-        var message = confirm('Jeu en pause...');
-    }
-    /************************** Debut du gestionnaire de touches *******************/
+    // - Debut du gestionnaire de touches 
     window.onkeydown = function (event) {
         var code = event.keyCode;
         console.log(code);
         switch (code) {
             case 68: // Marque la touche D pour la droite
-                animationLinkDroite();
+                linkRightAnimation();
                 break;
             case 81: // Marque la touche Q pour la gauche
-                animationLinkGauche();
+                linkLeftAnimation();
                 break;
             case 90: // Marque la touche Z pour le haut
-                animationLinkTop();
+                linkTopAnimation();
                 break;
             case 83: // Marque la touche S pour le bas
-                animationLinkBottom();
+                linkBottomAnimation();
                 break;
             case 13: // Marque la touche entrée pour coup d'épée
                 swordAttackAnimation();
@@ -751,5 +820,6 @@ window.addEventListener('DOMContentLoaded', function () {
 
     /* INTERVALS D'ANIMATIONS */
     setInterval(blinkTitle, 200);
-    setInterval(enemiesApparition, 5000);
+    setInterval(enemiesApparition, 1000);
+});
 });
