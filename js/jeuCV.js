@@ -42,7 +42,7 @@ document.getElementById('xp').style.display = 'none';
             console.log('Rentréeeee');
             containerLink.style.display = 'none';
             var fightingGif = document.createElement('img');
-            fightingGif.setAttribute('src', '../img/fight.gif');
+            fightingGif.setAttribute('src', 'img/fight.gif');
             fightingGif.style.position = 'absolute';
             fightingGif.style.width = '500px';
             fightingGif.style.left = '355px';
@@ -330,7 +330,7 @@ document.getElementById('xp').style.display = 'none';
             that.enemiesContainer.style.display = 'none';
             that.spriteEnemies = window.document.createElement('img');
             that.spriteEnemies.setAttribute('id', 'enemies');
-            that.spriteEnemies.setAttribute('src', '../sprites/megamanX.png');
+            that.spriteEnemies.setAttribute('src', 'sprites/megamanX.png');
             that.spriteEnemies.style.position = 'absolute';
             that.spriteEnemies.style.width = '765px';
             that.spriteEnemies.style.height = '765px';
@@ -386,7 +386,7 @@ document.getElementById('xp').style.display = 'none';
             that.arrowDiv.setAttribute('id', 'divFleche');
             var arrowSprite = window.document.createElement('img');
             arrowSprite.setAttribute('id', 'spriteFleche');
-            arrowSprite.setAttribute('src', '../sprites/linksprite.png');
+            arrowSprite.setAttribute('src', 'sprites/linksprite.png');
             var leftArrow = parseFloat(containerLink.style.left) + 49; // distance depuis laquelle la fleche part
             var topArrow = parseFloat(containerLink.style.top);
             topArrow = topArrow + (parseFloat(containerLink.style.height) / 2);
@@ -642,7 +642,7 @@ document.getElementById('xp').style.display = 'none';
         if(skillCount === 1){
             
             var imgHTML = document.createElement('img');
-            imgHTML.setAttribute('src', '../img/html5Logo.png');
+            imgHTML.setAttribute('src', 'img/html5Logo.png');
             imgHTML.style.width = '70px';
             imgHTML.style.height = '70px';
             logoHTML.style.width = '70px';
@@ -655,7 +655,7 @@ document.getElementById('xp').style.display = 'none';
 
         } else if(skillCount === 3){
             var imgCSS3 = document.createElement('img');
-            imgCSS3.setAttribute('src', '../img/css3Logo.png');
+            imgCSS3.setAttribute('src', 'img/css3Logo.png');
             imgCSS3.style.width = '70px';
             imgCSS3.style.height = '70px';
             logoCSS3.style.width = '70px';
@@ -668,7 +668,7 @@ document.getElementById('xp').style.display = 'none';
 
         } else if(skillCount === 5){
             var imgJavaScript = document.createElement('img');
-            imgJavaScript.setAttribute('src', '../img/javascriptLogo.png');
+            imgJavaScript.setAttribute('src', 'img/javascriptLogo.png');
             imgJavaScript.style.width = '70px';
             imgJavaScript.style.height = '70px';
             logoJavaScript.style.width = '70px';
@@ -681,7 +681,7 @@ document.getElementById('xp').style.display = 'none';
 
         } else if(skillCount === 7){
             var imgAngular = document.createElement('img');
-            imgAngular.setAttribute('src', '../img/angularLogo.png');
+            imgAngular.setAttribute('src', 'img/angularLogo.png');
             imgAngular.style.width = '70px';
             imgAngular.style.height = '70px';
             logoAngular.style.width = '70px';
@@ -694,7 +694,7 @@ document.getElementById('xp').style.display = 'none';
 
         } else if(skillCount === 9){
             var imgJquery = document.createElement('img');
-            imgJquery.setAttribute('src', '../img/jqueryLogo.png');
+            imgJquery.setAttribute('src', 'img/jqueryLogo.png');
             imgJquery.style.width = '70px';
             imgJquery.style.height = '70px';
             logoJQuery.style.width = '70px';
@@ -707,7 +707,7 @@ document.getElementById('xp').style.display = 'none';
 
         } else if(skillCount === 11){
             var imgBootstrap = document.createElement('img');
-            imgBootstrap.setAttribute('src', '../img/bootstrapLogo.png');
+            imgBootstrap.setAttribute('src', 'img/bootstrapLogo.png');
             imgBootstrap.style.width = '70px';
             imgBootstrap.style.height = '70px';
             logoBootstrap.style.width = '70px';
@@ -720,7 +720,7 @@ document.getElementById('xp').style.display = 'none';
 
         } else if(skillCount === 13){
             var imgNode = document.createElement('img');
-            imgNode.setAttribute('src', '../img/nodeJSLogo.png');
+            imgNode.setAttribute('src', 'img/nodeJSLogo.png');
             imgNode.style.width = '95px';
             imgNode.style.height = '75px';
             logoNodeJS.style.width = '95px';
@@ -733,7 +733,7 @@ document.getElementById('xp').style.display = 'none';
 
         } else if(skillCount === 15){
             var imgMongoDB = document.createElement('img');
-            imgMongoDB.setAttribute('src', '../img/mongoDBLogo.png');
+            imgMongoDB.setAttribute('src', 'img/mongoDBLogo.png');
             imgMongoDB.style.width = '70px';
             imgMongoDB.style.height = '70px';
             logoMongoDB.style.width = '70px';
@@ -746,7 +746,7 @@ document.getElementById('xp').style.display = 'none';
 
         } else if(skillCount === 18){
             var imgXpress = document.createElement('img');
-            imgXpress.setAttribute('src', '../img/expressJSLogo.png');
+            imgXpress.setAttribute('src', 'img/expressJSLogo.png');
             imgXpress.style.width = '95px';
             imgXpress.style.height = '45px';
             logoXpress.style.width = '95px';
@@ -759,7 +759,7 @@ document.getElementById('xp').style.display = 'none';
 
         } else if(skillCount === 21){
             var imgMeteor = document.createElement('img');
-            imgMeteor.setAttribute('src', '../img/meteorJSLogo.png');
+            imgMeteor.setAttribute('src', 'img/meteorJSLogo.png');
             imgMeteor.style.width = '70px';
             imgMeteor.style.height = '70px';
             logoMeteor.style.width = '70px';
@@ -772,7 +772,7 @@ document.getElementById('xp').style.display = 'none';
 
         } else if(skillCount === 23){
             var imgAjax = document.createElement('img');
-            imgAjax.setAttribute('src', '../img/ajaxLogo.png');
+            imgAjax.setAttribute('src', 'img/ajaxLogo.png');
             imgAjax.style.width = '95px';
             imgAjax.style.height = '45px';
             logoAjax.style.width = '95px';
@@ -812,14 +812,11 @@ document.getElementById('xp').style.display = 'none';
             case 220: // Marque la touche étoile pour autres Navigateurs.
                 bowAttackAnimation();
                 break;
-            case 80:
-                menupause();
-                break;
         };
     };
 
     /* INTERVALS D'ANIMATIONS */
     setInterval(blinkTitle, 200);
-    setInterval(enemiesApparition, 1000);
+    setInterval(enemiesApparition, 3000);
 });
 });

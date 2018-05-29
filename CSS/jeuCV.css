@@ -116,7 +116,7 @@ h1 {
     left: 560px;
     top: 80px;
     font-family: 'saiyanObliqueLeft';
-    color: red;
+    color: #92030C;
     font-size: 20px;
 }
 
@@ -182,25 +182,24 @@ h1 {
 }
 
 #forma-xp {
-    width: 1000px;
-    height: 343px;
+    width: 1240px;
+    height: 500px;
     margin: auto;
     position: relative;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    color: black;
     font-weight: bolder;
     border: 5px solid #583A34;
     border-radius: 15px;
-    font-family: 'intro-rust-base';
+    font-family: 'saiyan';
 }
 
 #terrainDBZ {
     position: absolute;
     left: 0px;
-    width: 1000px;
-    height: 343px;
+    width: 1240px;
+    height: 500px;
     z-index: -1;
 }
 
@@ -210,8 +209,9 @@ h1 {
 }
 
 #formations {
-    font-size: 8px;
-    width: 300px;
+    font-size: 23px;
+    width: 945px;
+    color: #92030C;
 }
 
 .formaListTitle {
@@ -219,8 +219,8 @@ h1 {
 }
 
 #xp {
-    margin-left: 110px;
-    font-size: 11px;
+    font-size: 19px;
+    color: #D6A600;
 }
 
 #xpList li {
@@ -239,8 +239,8 @@ h1 {
 }
 
 #frameLiens {
-    width: 1100px;
-    height: 555px;
+    width: 580px;
+    height: 400px;
     margin: auto;
 }
 
@@ -251,11 +251,13 @@ fieldset {
 #iconeGit {
     background-color: #FED18E;
     opacity: 0.5;
+    width: 250px;
 }
 
 #iconeCv {
     background-color: #FED18E;
     opacity: 0.5;
+    width: 250px;
 }
 
 @keyframes tourne {
