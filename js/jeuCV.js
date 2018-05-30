@@ -1,6 +1,6 @@
 'use strict';
-//window.onload = function(){
-window.addEventListener('DOMContentLoaded', function () {
+window.onload = function(){
+    
 $(document).ready(function(){
 document.getElementById('formations').style.display = 'none';
 document.getElementById('xp').style.display = 'none';
@@ -11,11 +11,25 @@ document.getElementById('xp').style.display = 'none';
     var gameFrame = window.document.getElementById('gameFrame');
     var skillFrame = document.getElementById('skillFrame');
     var divFormaXp = $('#forma-xp');
+    var synopsis = $('#synopsis');
+    var buttonBegin = document.getElementById('buttonBegin');
 
-    // Display none pour ne pas l'afficher dès le début.
+    synopsis.fadeIn(1000, 'linear');
+    setTimeout(function(){
+        synopsis.fadeOut('slow', function(){
+            synopsis.style.display = 'none';
+        });
+    }, 15000);
+
+    // - Gestion du button permettant de lancer le jeu et l'animation des ennemis.
+    buttonBegin.onclick = function(){
+        var divControls = document.getElementById('beginingDiv');
+        divControls.style.zIndex = '-1';
+        setInterval(enemiesApparition, 3000);
+    }
+
+    // Display none pour ne pas afficher dès le début la div des informations globales.
     document.getElementById('forma-xp').style.display = 'none';
-
-
 
     // INIT SCORE
     /************************** Gestion du score ***********************************/
@@ -25,14 +39,11 @@ document.getElementById('xp').style.display = 'none';
 
     var scoreIncrement = function () { 
         
-            if(scoreValue === 500){
+            if(scoreValue === 100){
                 divFormaXp.show(1000);
                 $('#formations').fadeIn(1000, 'linear');
                 $('#xp').fadeIn(1000, 'swing');
             }
-             
-          
-        
 
         scoreValue = scoreValue + 50;
         divScore.innerHTML = 'Score = ' + scoreValue;
@@ -40,13 +51,24 @@ document.getElementById('xp').style.display = 'none';
 
         if(scoreValue === 1500){
             console.log('Rentréeeee');
-            containerLink.style.display = 'none';
+            gameFrame.removeChild(containerLink);
+
+            var finishText = document.createElement('p');
+            finishText.innerHTML = 'Finish !'
+            finishText.style.position = 'absolute';
+            finishText.style.left = '605px';
+            finishText.style.top = '0px';
+            finishText.style.fontFamily = 'saiyan';
+            finishText.style.fontSize = '30px';
+            finishText.className = 'redSaiyan';
+
             var fightingGif = document.createElement('img');
             fightingGif.setAttribute('src', 'img/fight.gif');
             fightingGif.style.position = 'absolute';
             fightingGif.style.width = '500px';
             fightingGif.style.left = '355px';
             fightingGif.style.top = '100px';
+            gameFrame.appendChild(finishText);
             gameFrame.appendChild(fightingGif);
         }          
     };
@@ -562,7 +584,7 @@ document.getElementById('xp').style.display = 'none';
                         listEnemies[index].enemiesContainer.remove();
                         scoreIncrement();
                         skillApparition(index);
-                        console.log('threeeeee !');
+                        
                     }
 
 
@@ -786,6 +808,9 @@ document.getElementById('xp').style.display = 'none';
 
     };
 
+    // - Mise en place de l'animation du titre.
+    setInterval(blinkTitle, 200);  
+
     // - Debut du gestionnaire de touches 
     window.onkeydown = function (event) {
         var code = event.keyCode;
@@ -806,7 +831,7 @@ document.getElementById('xp').style.display = 'none';
             case 13: // Marque la touche entrée pour coup d'épée
                 swordAttackAnimation();
                 break;
-            case 170: // marque la touche étoile pour tir arc
+            case 170: // Marque la touche étoile pour tir arc
                 bowAttackAnimation();
                 break;
             case 220: // Marque la touche étoile pour autres Navigateurs.
@@ -814,9 +839,5 @@ document.getElementById('xp').style.display = 'none';
                 break;
         };
     };
-
-    /* INTERVALS D'ANIMATIONS */
-    setInterval(blinkTitle, 200);
-    setInterval(enemiesApparition, 3000);
 });
-});
+};
