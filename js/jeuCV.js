@@ -47,7 +47,6 @@ var game = function () {
 
             scoreValue = scoreValue + 50;
             divScore.innerHTML = 'Score = ' + scoreValue;
-            console.log('Votre score actuel : ' + scoreValue);
 
             if (scoreValue === 1500) {
                 gameFrame.removeChild(containerLink);
@@ -378,7 +377,7 @@ var game = function () {
                 that.spriteEnemies.style.transform = 'scaleX(-1)';
                 that.enemiesContainer.appendChild(that.spriteEnemies);
                 gameFrame.appendChild(that.enemiesContainer);
-                console.log('init enemies finished');
+                
             };
 
             this.animationEnemies = function () {
@@ -592,7 +591,6 @@ var game = function () {
 
                 for (var index = 0; index < listEnemies.length; index++) {
                     if (collisionDetection(containerLink, listEnemies[index].enemiesContainer)) {
-                        console.log('Damage count for enemy : ' + listEnemies[index].damageCount + '\nSword damage.');
                         listEnemies[index].enemiesContainer.style.width = listEnemies[index].decompositionEnemies.damagedEnemies[0].maskWidth;
                         listEnemies[index].enemiesContainer.style.height = listEnemies[index].decompositionEnemies.damagedEnemies[0].maskHeight;
                         listEnemies[index].spriteEnemies.style.top = listEnemies[index].decompositionEnemies.damagedEnemies[0].imageTop;
@@ -833,7 +831,6 @@ var game = function () {
         // - Debut du gestionnaire de touches 
         window.onkeydown = function (event) {
             var code = event.keyCode;
-            console.log(code);
             switch (code) {
                 case 68: // Marque la touche D pour la droite
                     linkRightAnimation();
