@@ -317,8 +317,12 @@ span {
 #textGIT {
     font-family: 'intro-rust-h2';
     font-family: 'saiyan'
-}
+} 
 
 legend {
     font-weight: bolder;
+}
+
+p{
+    text-shadow: 0px 0px 10px #FFFF;
 }
